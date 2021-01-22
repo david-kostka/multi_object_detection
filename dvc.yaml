@@ -1,0 +1,42 @@
+stages:
+  generate_csv:
+    cmd: python src/generate_csv.py --raw_images_path=data/datasets/raw/experiset/images --csv_path=data/datasets/raw/experiset/labels.csv --output_folder=data/datasets/experiset/labels
+    deps:
+    - data/datasets/raw/experiset/labels.csv
+    - data/datasets/raw/experiset/images
+    - src/generate_csv.py
+    params:
+    - generate_csv.split
+    - generate_csv.negative_labels_rate
+    outs:
+    - data/datasets/experiset/labels
+
+  generate_tfrecord:
+    cmd: python src/generate_tfrecord.py --raw_images_path=data/datasets/raw/experiset/images/ --csv_path=data/datasets/experiset/labels/total_with_negatives.csv --output_folder=data/datasets/experiset/tfrecords
+    deps:
+    - data/datasets/raw/experiset/images
+    - data/datasets/experiset/labels
+    - src/generate_tfrecord.py
+    outs:
+    - data/datasets/experiset/tfrecords
+    
+  train:
+    cmd: python src/train.py --train_ds_path=data/datasets/experiset/tfrecords/train.record --val_ds_path=data/datasets/experiset/tfrecords/val.record --model_path=data/models/experimodel
+    deps:
+    - data/datasets/experiset/tfrecords
+    - src/train.py
+    outs:
+    - data/models/experimodel
+
+  evaluate:
+    cmd: python src/evaluate.py --model_path=data/models/experimodel/experimodel.hdf5 --test_ds_path=data/datasets/experiset/tfrecords/val.record
+    deps:
+    - data/datasets/experiset/tfrecords
+    - data/models/experimodel
+    - src/evaluate.py
+    metrics:
+      - scores.json:
+          cache: false
+    plots:
+      - prc.json:
+          cache: false

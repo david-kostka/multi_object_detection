@@ -1,0 +1,81 @@
+generate_csv:
+  cmd: python src/generate_csv.py --raw_images_path=data/datasets/raw/experiset/images
+    --csv_path=data/datasets/raw/experiset/labels.csv --output_folder=data/datasets/experiset/labels
+  deps:
+  - path: data/datasets/raw/experiset/images
+    md5: 42751538cdf4859eb20c116d86cfeee7.dir
+    size: 569841454
+    nfiles: 2852
+  - path: data/datasets/raw/experiset/labels.csv
+    md5: eae8c077437818d5a95492a4faa2ec13
+    size: 348089
+  - path: src/generate_csv.py
+    md5: 281f956fa9ed305a870e343387037ee8
+    size: 2903
+  params:
+    params.yaml:
+      generate_csv.negative_labels_rate: 0.3
+      generate_csv.split: 0.2
+  outs:
+  - path: data/datasets/experiset/labels
+    md5: 00a6ada80a451e2bcf3e61ee0fc62f85.dir
+    size: 48524
+    nfiles: 3
+generate_tfrecord:
+  cmd: python src/generate_tfrecord.py --raw_images_path=data/datasets/raw/experiset/images/
+    --csv_path=data/datasets/experiset/labels/total_with_negatives.csv --output_folder=data/datasets/experiset/tfrecords
+  deps:
+  - path: data/datasets/experiset/labels
+    md5: 00a6ada80a451e2bcf3e61ee0fc62f85.dir
+    size: 48524
+    nfiles: 3
+  - path: data/datasets/raw/experiset/images
+    md5: 42751538cdf4859eb20c116d86cfeee7.dir
+    size: 569841454
+    nfiles: 2852
+  - path: src/generate_tfrecord.py
+    md5: 872af40d9e20cbdde9f7fcaa8d62fbf1
+    size: 1410
+  outs:
+  - path: data/datasets/experiset/tfrecords
+    md5: 3347305fbba4effb1b18db34739434ba.dir
+    size: 250484086
+    nfiles: 2
+train:
+  cmd: python src/train.py --train_ds_path=data/datasets/experiset/tfrecords/train.record
+    --val_ds_path=data/datasets/experiset/tfrecords/val.record --model_path=data/models/experimodel
+  deps:
+  - path: data/datasets/experiset/tfrecords
+    md5: 3347305fbba4effb1b18db34739434ba.dir
+    size: 250484086
+    nfiles: 2
+  - path: src/train.py
+    md5: b94e6a9dd79f8f5ed104d3ed639b953c
+    size: 3406
+  outs:
+  - path: data/models/experimodel
+    md5: 570ed702618ec3cc5b4d94f921635119.dir
+    size: 2546890
+    nfiles: 5
+evaluate:
+  cmd: python src/evaluate.py --model_path=data/models/experimodel/experimodel.hdf5
+    --test_ds_path=data/datasets/experiset/tfrecords/val.record
+  deps:
+  - path: data/datasets/experiset/tfrecords
+    md5: 3347305fbba4effb1b18db34739434ba.dir
+    size: 250484086
+    nfiles: 2
+  - path: data/models/experimodel
+    md5: 570ed702618ec3cc5b4d94f921635119.dir
+    size: 2546890
+    nfiles: 5
+  - path: src/evaluate.py
+    md5: 2671be06b3f36277647780f0cf28e028
+    size: 3309
+  outs:
+  - path: prc.json
+    md5: 7959b878d3bc56e27b8b6c291810c611
+    size: 11653
+  - path: scores.json
+    md5: 7eb4bc1fbba43fce04c96caed97eb6ab
+    size: 92

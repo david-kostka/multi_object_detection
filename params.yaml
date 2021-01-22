@@ -1,0 +1,3 @@
+generate_csv:
+  split: 0.20
+  negative_labels_rate: 0.3
