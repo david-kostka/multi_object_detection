@@ -1,0 +1,5 @@
+[core]
+    remote = zwoogle4
+['remote "zwoogle4"']
+    url = ssh://maker@zwoogle4.ds.fh-kl.de/home/maker/dvc
+    ask_password = true
