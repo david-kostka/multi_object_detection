@@ -53,10 +53,6 @@ train:
     md5: b94e6a9dd79f8f5ed104d3ed639b953c
     size: 3406
   outs:
-  - path: data/logs/experimodel
-    md5: 04c6ba6075ddef105bf08d1a88f95dbd.dir
-    size: 154633
-    nfiles: 10
   - path: data/models/experimodel
     md5: e1ec1fb6779e5ea099c0a01678090428.dir
     size: 2546890

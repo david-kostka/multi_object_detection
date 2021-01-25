@@ -1,6 +1,0 @@
-checkpoints
-graphs
-logs
-datasets/raw
-datasets/experiset/tfrecords/train.record
-datasets/experiset/tfrecords/val.record
