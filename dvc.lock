@@ -18,7 +18,7 @@ generate_csv:
       generate_csv.split: 0.2
   outs:
   - path: data/datasets/experiset/labels
-    md5: 49b0eecd9adc6e03414f449506773bd8.dir
+    md5: 1f7a515c75454549437ef84d72378bd2.dir
     size: 48524
     nfiles: 3
 generate_tfrecord:
@@ -26,7 +26,7 @@ generate_tfrecord:
     --csv_path=data/datasets/experiset/labels/total_with_negatives.csv --output_folder=data/datasets/experiset/tfrecords
   deps:
   - path: data/datasets/experiset/labels
-    md5: 49b0eecd9adc6e03414f449506773bd8.dir
+    md5: 1f7a515c75454549437ef84d72378bd2.dir
     size: 48524
     nfiles: 3
   - path: data/datasets/raw/experiset/images
@@ -38,23 +38,23 @@ generate_tfrecord:
     size: 1410
   outs:
   - path: data/datasets/experiset/tfrecords
-    md5: efed7b44f8568400a09d9c069706493f.dir
-    size: 250993694
+    md5: bd1e68d53315f09d044dd182088fe95e.dir
+    size: 249347454
     nfiles: 2
 train:
   cmd: python src/train.py --train_ds_path=data/datasets/experiset/tfrecords/train.record
     --val_ds_path=data/datasets/experiset/tfrecords/val.record --model_path=data/models/experimodel
   deps:
   - path: data/datasets/experiset/tfrecords
-    md5: efed7b44f8568400a09d9c069706493f.dir
-    size: 250993694
+    md5: bd1e68d53315f09d044dd182088fe95e.dir
+    size: 249347454
     nfiles: 2
   - path: src/train.py
     md5: b94e6a9dd79f8f5ed104d3ed639b953c
     size: 3406
   outs:
   - path: data/models/experimodel
-    md5: e1ec1fb6779e5ea099c0a01678090428.dir
+    md5: dcec07f28b5174a2c858597fa8cd2887.dir
     size: 2546890
     nfiles: 5
 evaluate:
@@ -62,11 +62,11 @@ evaluate:
     --test_ds_path=data/datasets/experiset/tfrecords/val.record
   deps:
   - path: data/datasets/experiset/tfrecords
-    md5: efed7b44f8568400a09d9c069706493f.dir
-    size: 250993694
+    md5: bd1e68d53315f09d044dd182088fe95e.dir
+    size: 249347454
     nfiles: 2
   - path: data/models/experimodel
-    md5: e1ec1fb6779e5ea099c0a01678090428.dir
+    md5: dcec07f28b5174a2c858597fa8cd2887.dir
     size: 2546890
     nfiles: 5
   - path: src/evaluate.py
@@ -74,8 +74,8 @@ evaluate:
     size: 3309
   outs:
   - path: prc.json
-    md5: b3df251340409022d83ccc3700200a38
-    size: 11054
+    md5: 1a82e6ad5694951e8cf4b82ed22df769
+    size: 10016
   - path: scores.json
-    md5: be744cf0d4a32df0708960484302121b
-    size: 92
+    md5: a8d64e151a6897a862f6c36839a0478d
+    size: 93
